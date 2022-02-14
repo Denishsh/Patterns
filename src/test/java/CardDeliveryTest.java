@@ -63,7 +63,7 @@ public class CardDeliveryTest {
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input").setValue(info.getDate());
-        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=name] input").setValue("12 df");
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
         $$("button").filter(text("Запланировать")).first().click();
