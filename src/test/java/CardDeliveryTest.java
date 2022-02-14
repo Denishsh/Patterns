@@ -1,0 +1,122 @@
+import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+
+public class CardDeliveryTest {
+
+    @BeforeEach
+    public void setup() {
+        open("http://localhost:9999");
+        Configuration.browser = "firefox";
+    }
+
+    @Test
+    public void correctDeliveryTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".notification__title").shouldHave(text("Успешно!"));
+        $(".notification__content")
+                .shouldHave(text("Встреча успешно запланирована на \n" + info.getDate()));
+    }
+
+    @Test
+    public void emptyCityTest() {
+
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName()); // баг, с буквой ё не принимается
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void incorrectCityTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue("Москваааа");
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid .input__sub").shouldHave(text("Доставка в выбранный город недоступна"));
+    }
+
+    @Test
+    public void incorrectNameTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid .input__sub").shouldHave(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+    }
+
+    @Test
+    public void emptyNameTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void incorrectPhoneTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        // баг, можно любое к-во цифр в номере оставить (должно быть 11)
+    }
+
+    @Test
+    public void emptyPhoneTest() {
+
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $(".checkbox__box").click();
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void withoutAgreementTest() {
+        DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=name] input").setValue(info.getFullName());
+        $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
+        $$("button").filter(text("Запланировать")).first().click();
+        $(".input_invalid");
+    }
+}
