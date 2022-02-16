@@ -29,6 +29,15 @@ public class CardDeliveryTest {
         $(".notification__title").shouldHave(text("Успешно!"));
         $(".notification__content")
                 .shouldHave(text("Встреча успешно запланирована на \n" + info.getDate()));
+
+        $$("button").filter(text("Запланировать")).first().click();
+        $$("button").filter(text("Перепланировать")).first().click();
+
+        DataGenerator.RegistrationInfo infoUpd = DataGenerator.Registration.generateInfo("ru", 4);
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(infoUpd.getDate());
+        $$("button").filter(text("Запланировать")).first().click();
+
     }
 
     @Test
