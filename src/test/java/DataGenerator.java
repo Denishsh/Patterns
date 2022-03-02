@@ -17,7 +17,6 @@ public class DataGenerator {
             Faker faker = new Faker(new Locale(locale));
             return new RegistrationInfo(
                     generateCity(),
-                    generateDate(3),
                     faker.name().fullName(),
                     faker.phoneNumber().phoneNumber());
         }
@@ -26,7 +25,6 @@ public class DataGenerator {
             Faker faker = new Faker(new Locale(locale));
             return new RegistrationInfo(
                     generateCity(),
-                    generateDate(days),
                     faker.name().fullName(),
                     faker.phoneNumber().phoneNumber());
         }
@@ -51,7 +49,6 @@ public class DataGenerator {
     @Data
     static class RegistrationInfo {
         private final String city;
-        private final String date;
         private final String fullName;
         private final String phoneNumber;
     }

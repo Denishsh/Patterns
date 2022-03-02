@@ -18,34 +18,35 @@ public class CardDeliveryTest {
     @Test
     public void correctDeliveryTest() {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        String date = DataGenerator.generateDate(3);
 
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(date);
         $("[data-test-id=name] input").setValue(info.getFullName());
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
         $$("button").filter(text("Запланировать")).first().click();
         $(".notification__title").shouldHave(text("Успешно!"));
         $(".notification__content")
-                .shouldHave(text("Встреча успешно запланирована на \n" + info.getDate()));
+                .shouldHave(text("Встреча успешно запланирована на \n" + date));
 
         $$("button").filter(text("Запланировать")).first().click();
         $$("button").filter(text("Перепланировать")).first().click();
 
         DataGenerator.RegistrationInfo infoUpd = DataGenerator.Registration.generateInfo("ru", 4);
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(infoUpd.getDate());
+        $("[data-test-id=date] input").setValue(date);
         $$("button").filter(text("Запланировать")).first().click();
 
     }
 
     @Test
     public void emptyCityTest() {
-
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        String date = DataGenerator.generateDate(3);
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(date);
         $("[data-test-id=name] input").setValue(info.getFullName()); // баг, с буквой ё не принимается
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
@@ -56,9 +57,10 @@ public class CardDeliveryTest {
     @Test
     public void incorrectCityTest() {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
+        String date = DataGenerator.generateDate(3);
         $("[data-test-id=city] input").setValue("Москваааа");
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(date);
         $("[data-test-id=name] input").setValue(info.getFullName());
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
@@ -71,7 +73,7 @@ public class CardDeliveryTest {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
         $("[data-test-id=name] input").setValue("12 df");
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
@@ -84,7 +86,7 @@ public class CardDeliveryTest {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
         $$("button").filter(text("Запланировать")).first().click();
@@ -96,7 +98,7 @@ public class CardDeliveryTest {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
         $("[data-test-id=name] input").setValue(info.getFullName());
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $(".checkbox__box").click();
@@ -110,7 +112,7 @@ public class CardDeliveryTest {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
         $("[data-test-id=name] input").setValue(info.getFullName());
         $(".checkbox__box").click();
         $$("button").filter(text("Запланировать")).first().click();
@@ -122,7 +124,7 @@ public class CardDeliveryTest {
         DataGenerator.RegistrationInfo info = DataGenerator.Registration.generateInfo("ru");
         $("[data-test-id=city] input").setValue(info.getCity());
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(info.getDate());
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(3));
         $("[data-test-id=name] input").setValue(info.getFullName());
         $("[data-test-id=phone] input").setValue(info.getPhoneNumber());
         $$("button").filter(text("Запланировать")).first().click();
